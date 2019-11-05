@@ -69,7 +69,7 @@
 		                        type: 'success',
 		                        message: '登录成功'
 							});
-							Global.token = res.token;
+							Global.token = res.data.token;
 							Global.islogin = true;
 							Global.username = this.loginForm.username;
 							this.$router.push('manage')

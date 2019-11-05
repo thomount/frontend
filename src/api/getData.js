@@ -128,7 +128,7 @@ export const foodCategory = (latitude, longitude) => fetch('/shopping/v2/restaur
  * 获取餐馆列表
  */
 
-export const getResturants = data => fetch('/shopping/restaurants', data);
+export const getRichlist = data => fetch('/api/rich_list/', data, 'POST');
 
 /**
  * 获取餐馆详细信息
@@ -152,13 +152,13 @@ export const updateResturant = data => fetch('/shopping/updateshop', data, 'POST
  * 删除餐馆
  */
 
-export const deleteResturant = restaurant_id => fetch('/shopping/restaurant/' + restaurant_id, {}, 'DELETE');
+export const deleteRich = data => fetch('/api/rich_delete/', data, 'POST');
 
 /**
  * 获取食品列表
  */
 
-export const getFoods = data => fetch('/shopping/v2/foods', data);
+export const getFoods = data => fetch('', data);
 
 /**
  * 获取食品数量

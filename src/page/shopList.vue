@@ -8,54 +8,54 @@
                 <el-table-column type="expand">
                   <template slot-scope="props">
                     <el-form label-position="left" inline class="demo-table-expand">
-                      <el-form-item label="店铺名称">
-                        <span>{{ props.row.name }}</span>
+                      <el-form-item label="标题">
+                        <span>{{ props.row.title }}</span>
                       </el-form-item>
-                      <el-form-item label="店铺地址">
-                        <span>{{ props.row.address }}</span>
+                      <el-form-item label="作者">
+                        <span>{{ props.row.author }}</span>
                       </el-form-item>
-                      <el-form-item label="店铺介绍">
-                        <span>{{ props.row.description }}</span>
+                      <el-form-item label="发布时间">
+                        <span>{{ props.row.time }}</span>
                       </el-form-item>
-                      <el-form-item label="店铺 ID">
+                      <el-form-item label="文章 ID">
                         <span>{{ props.row.id }}</span>
                       </el-form-item>
-                      <el-form-item label="联系电话">
-                        <span>{{ props.row.phone }}</span>
+                      <el-form-item label="是否置顶">
+                        <span>{{ props.row.topped }}</span>
                       </el-form-item>
-                      <el-form-item label="评分">
-                        <span>{{ props.row.rating }}</span>
+                      <el-form-item label="点赞">
+                        <span>{{ props.row.favor }}</span>
                       </el-form-item>
-                      <el-form-item label="销售量">
-                        <span>{{ props.row.recent_order_num }}</span>
+                      <el-form-item label="评论">
+                        <span>{{ props.row.comment }}</span>
                       </el-form-item>
-                      <el-form-item label="分类">
-                        <span>{{ props.row.category }}</span>
+                      <el-form-item label="备注">
+                        <span>{{ }}</span>
                       </el-form-item>
                     </el-form>
                   </template>
                 </el-table-column>
                 <el-table-column
-                  label="店铺名称"
-                  prop="name">
+                  label="标题"
+                  prop="title">
                 </el-table-column>
                 <el-table-column
-                  label="店铺地址"
-                  prop="address">
+                  label="作者"
+                  prop="author">
                 </el-table-column>
                 <el-table-column
-                  label="店铺介绍"
-                  prop="description">
+                  label="发布时间"
+                  prop="time">
                 </el-table-column>
                 <el-table-column label="操作" width="200">
                   <template slot-scope="scope">
                     <el-button
                       size="mini"
-                      @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                      @click="checkRich(scope.$index, scope.row)">查看</el-button>
                     <el-button
                       size="mini"
                       type="Success"
-                      @click="addFood(scope.$index, scope.row)">添加食品</el-button>
+                      @click="changeOrder(scope.$index, scope.row)">更改顺序</el-button>
                     <el-button
                       size="mini"
                       type="danger"
@@ -125,7 +125,7 @@
 <script>
     import headTop from '../components/headTop'
     import {baseUrl, baseImgPath} from '@/config/env'
-    import {cityGuess, getResturants, getResturantsCount, foodCategory, updateResturant, searchplace, deleteResturant} from '@/api/getData'
+    import {getRichlist, deleteRich} from '@/api/getData'
     export default {
         data(){
             return {
@@ -154,14 +154,16 @@
         methods: {
             async initData(){
                 try{
-                    this.city = await cityGuess();
-                    const countData = await getResturantsCount();
-                    if (countData.status == 1) {
-                        this.count = countData.count;
+                    const res = await getRichlist();
+//                    console.log(res);
+                    if (res.status == 200) {
+                        console.log('rich list');
+                        console.log(res);
+                        
                     }else{
                         throw new Error('获取数据失败');
                     }
-                    this.getResturants();
+                    this.getRichlist();
                 }catch(err){
                     console.log('获取数据失败', err);
                 }
@@ -192,23 +194,26 @@
                     console.log('获取商铺种类失败', err);
                 }
             },
-            async getResturants(){
-                const {latitude, longitude} = this.city;
-                const restaurants = await getResturants({latitude, longitude, offset: this.offset, limit: this.limit});
-                this.tableData = [];
-                restaurants.forEach(item => {
-                    const tableData = {};
-                    tableData.name = item.name;
-                    tableData.address = item.address;
-                    tableData.description = item.description;
-                    tableData.id = item.id;
-                    tableData.phone = item.phone;
-                    tableData.rating = item.rating;
-                    tableData.recent_order_num = item.recent_order_num;
-                    tableData.category = item.category;
-                    tableData.image_path = item.image_path;
-                    this.tableData.push(tableData);
-                })
+            async getRichlist(){
+                const res = await getRichlist();
+                var ret = new Array();
+                for (var i in res.data) {
+                    var x = res.data[i];
+                    var y = {};
+                    console.log(x);
+                    for (var item in x) {
+                        console.log(x[item]);
+                        if (x[item] != null) console.log(x[item].constructor == String);
+                        if (x[item]!= null && x[item].constructor == String) 
+                            y[item] = x[item].substring(1, x[item].length-1);
+                        else 
+                            y[item] = x[item];
+                    }
+                    ret.push(y);
+                    console.log(y);
+                }
+                this.tableData = ret;
+                console.log(this.tableData);
             },
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);
@@ -218,27 +223,21 @@
                 this.offset = (val - 1)*this.limit;
                 this.getResturants()
             },
-            handleEdit(index, row) {
-                this.selectTable = row;
-                this.address.address = row.address;
-                this.dialogFormVisible = true;
-                this.selectedCategory = row.category.split('/');
-                if (!this.categoryOptions.length) {
-                    this.getCategory();
-                }
+            checkRich(index, row) {
+                console.log('查看富文本');
             },
-            addFood(index, row){
-                this.$router.push({ path: 'addGoods', query: { restaurant_id: row.id }})
+            changeOrder(index, row){
+                console.log('更改顺序');
             },
             async handleDelete(index, row) {
                 try{
-                    const res = await deleteResturant(row.id);
-                    if (res.status == 1) {
+                    const res = await deleteRich({id: row.id});
+                    if (res.status == 200) {
                         this.$message({
                             type: 'success',
                             message: '删除店铺成功'
                         });
-                        this.tableData.splice(index, 1);
+                        this.getRichlist();
                     }else{
                         throw new Error(res.message)
                     }
