@@ -54,8 +54,8 @@ export default async(url = '', data = {}, type = 'GET', method = 'fetch') => {
 		try {
 			const response = await fetch(url, requestConfig);
 			const data = await response.json();
-			console.log(data);
-			console.log(response);
+//			console.log(data);
+//			console.log(response);
 //			console.log(typeof data);
 //			console.log("response_end");
 			const _data = JSON.parse(data);
@@ -64,6 +64,8 @@ export default async(url = '', data = {}, type = 'GET', method = 'fetch') => {
 					value: _data[i]
 				})	
 			}
+			console.log('response:');
+			console.log(response);
 			return response;
 		} catch (error) {
 			throw new Error(error)
