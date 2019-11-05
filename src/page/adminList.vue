@@ -6,24 +6,42 @@
 		      :data="tableData"
 		      style="width: 100%">
 		      <el-table-column
-		        prop="user_name"
+		        prop="username"
 		        label="姓名"
-		        width="180">
+		        >
 		      </el-table-column>
 		      <el-table-column
-		        prop="create_time"
-		        label="注册日期"
-		        width="220">
+		        prop="levelname"
+		        label="用户权限等级"
+		       >
 		      </el-table-column>
               <el-table-column
-                prop="city"
-                label="地址"
-                width="180">
+                prop="edit_rich_name"
+                label="编辑富文本权限"
+                >
+                    <template slot-scope="props">
+                        <span>{{props.row.edit_rich_name}}</span>
+                        <el-button style="mini" @click="change_editAuth(props.$index, 0)">修改</el-button>
+                    </template>
               </el-table-column>
-		      <el-table-column
-		        prop="admin"
-		        label="权限">
-		      </el-table-column>
+              <el-table-column
+                prop="edit_charge_name"
+                label="编辑充值活动权限"
+                >
+                    <template slot-scope="props">
+                        <span>{{props.row.edit_charge_name}}</span>
+                        <el-button style="mini" @click="change_editAuth(props.$index, 1)">修改</el-button>
+                    </template>
+              </el-table-column>
+              <el-table-column
+                prop="edit_config_name"
+                label="编辑运行参数权限"
+                >
+                    <template slot-scope="props">
+                        <span>{{props.row.edit_config_name}}</span>
+                        <el-button style="mini" @click="change_editAuth(props.$index, 2)">修改</el-button>
+                    </template>
+              </el-table-column>
 		    </el-table>
 		    <div class="Pagination" style="text-align: left;margin-top: 10px;">
                 <el-pagination
@@ -41,7 +59,7 @@
 
 <script>
     import headTop from '../components/headTop'
-//    import {adminList, adminCount} from '@/api/getData'
+    import { getUserlist, changeUserauth } from '@/api/getData'
     export default {
         data(){
             return {
@@ -56,19 +74,40 @@
     	components: {
     		headTop,
     	},
-        created(){
+        activated(){
             this.initData();
         },
         methods: {
             async initData(){
                 try{
-                    const countData = await adminCount();
-                    if (countData.status == 1) {
-                        this.count = countData.count;
-                    }else{
-                        throw new Error('获取数据失败');
+                    const res = await getUserlist({});
+                    if (res.status == 200) {
+                        this.tableData = []
+                        for (var i in res.data) {
+                            var x = res.data[i];
+                            switch (x.level) {
+                                case 2:
+                                    x.levelname = "高级用户";
+                                    break;
+                                case 1:
+                                    x.levelname = "中级用户";
+                                    break;
+                                case 0:
+                                    x.levelname = "渠道商";
+                                    break;
+                                default:
+                                    x.levelname = "其他用户";
+                            }
+                            x.edit_rich_name = (x.edit_rich == true)?'是': "否";
+                            x.edit_charge_name = (x.edit_charge == true)?'是': "否";
+                            x.edit_config_name = (x.edit_config == true)?'是': "否";
+                            this.tableData.push(x);
+                        }
+                        console.log(this.tableData);
+                    } else {
+                        console.log('用户列表读取失败');
                     }
-                    this.getAdmin();
+
                 }catch(err){
                     console.log('获取数据失败', err);
                 }
@@ -81,27 +120,45 @@
                 this.offset = (val - 1)*this.limit;
                 this.getAdmin()
             },
-            async getAdmin(){
+            async change_editAuth(index, pos) {
                 try{
-                    const res = await adminList({offset: this.offset, limit: this.limit});
-                    if (res.status == 1) {
-                    	this.tableData = [];
-                    	res.data.forEach(item => {
-                    		const tableItem = {
-                    			create_time: item.create_time,
-						        user_name: item.user_name,
-						        admin: item.admin,
-                                city: item.city,
-                    		}
-                    		this.tableData.push(tableItem)
-                    	})
-                    }else{
-                    	throw new Error(res.message)
+                    var data = this.tableData[index];
+                    switch (pos) {
+                        case 0 :
+                            data.edit_rich = !data.edit_rich;
+                            break;
+                        case 1:
+                            data.edit_charge = !data.edit_charge;
+                            break;
+                        case 2:
+                            data.edit_config = !data.edit_config;
+                            break;
                     }
-                }catch(err){
-                    console.log('获取数据失败', err);
+                    delete data.edit_rich_name;
+                    delete data.edit_charge_name;
+                    delete data.edit_config_name;
+                    delete data.level;
+                    delete data.levelname;
+                    console.log('change auth');
+                    console.log(data);
+                    const res = await changeUserauth(data);
+                    if (res.status == 200) {
+                        this.$message({
+                            type: 'success',
+                            message: '修改权限成功'
+                        });
+                    } else {
+                        this.$message({
+                            type: 'error',
+                            message: '修改权限失败'
+                        });                    
+                    }
+                } catch(e) {
+                    console.log(e);
                 }
-            }
+                this.initData();
+            },
+
         },
     }
 </script>

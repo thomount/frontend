@@ -19,6 +19,13 @@
                 <li>
                     <span>联系电话：</span><span>{{adminInfo.phone}}</span>
                 </li>
+                <li class="text-area">
+                    <span>新密码：</span>
+                    <textarea placeholder="请输入新密码" id='new_psw'></textarea>
+                </li>                
+                <li>
+                    <el-button @click="submit()">确定修改</el-button>
+                </li>
              </ul>
         </div>
     </div>
@@ -28,7 +35,7 @@
 	import headTop from '../components/headTop'
     import {mapState} from 'vuex'
     import {baseUrl, baseImgPath} from '@/config/env'
-    import {getAdminInfo} from '@/api/getData'
+    import {getAdminInfo, changePsw} from '@/api/getData'
     import Global from '@/config/global'
 
     export default {
@@ -49,7 +56,25 @@
         activated() {
             getAdminInfo({username: Global.username});
         },
-
+        async submit() {
+            var new_psw = document.getElementById("new_psw").value;
+            try{
+                const res = await changePsw({username: Global.username, password: new_psw});
+                if (res.status == 200) {
+                    this.$message({
+                        type: 'success',
+                        message: '修改密码成功',
+                    })
+                } else {
+                    this.$message({
+                        type: "error",
+                        message: "修改密码失败"+res.msg,
+                    })
+                }
+            } catch (e) {
+                console.log(e);
+            }
+        }
     }
 </script>
 

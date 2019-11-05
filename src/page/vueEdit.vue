@@ -58,10 +58,12 @@
                 this.topped = document.getElementById("topped").checked;
 //                console.log(this.topped);
 //                console.log(this.title);
-                console.log(this.content);
+//                console.log(this.content);
                 const res = await richtext({'topped': this.topped, 'title': this.title, 'content': this.content})
+//                console.log(res);
                 if (res.status == 200) {
                     this.$message.success('提交成功！');
+                    this.$router.push('/shopList');
                 } else {
                     this.$message.error(res.message);
                 }
