@@ -72,7 +72,7 @@
 							Global.token = res.data.token;
 							Global.islogin = true;
 							Global.username = this.loginForm.username;
-							this.$router.push('manage')
+							this.$router.push('adminSet')
 						}else{
 							this.$message({
 		                        type: 'error',

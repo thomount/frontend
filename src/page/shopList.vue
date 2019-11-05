@@ -162,7 +162,7 @@
         },
         activated(){
             this.initData();
-            console.log(11111)
+            this.text = '';
         },
     	components: {
     		headTop,
