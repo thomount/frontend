@@ -6,7 +6,7 @@
  * baseImgPath: 图片存放地址
  * 
  */
-let baseUrl = 'http://192.168.1.101:8000'; 
+let baseUrl = 'http://183.172.140.221:8000'; 
 //let baseUrl = 'http://127.0.0.1:8000'; 
 
 let routerMode = 'hash';

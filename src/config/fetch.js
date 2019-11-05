@@ -21,8 +21,11 @@ export default async(url = '', data = {}, type = 'GET', method = 'fetch') => {
 //		console.log(data);
 		let datastring = ''
 		for (var item in data) {
-			datastring += item+'='+data[item]+';'
+			var temp = JSON.stringify(data[item]);
+			console.log(temp);
+			datastring += item+'='+temp.replace(/\\"/g, '"').replace(/\\/g, '\\g').replace(/;/g, '\\:').replace(/\+/g, '\\j')+';'
 		}
+		console.log('datastring: '+datastring);
 		let _headers = new Headers({
 			'Content-Type': 'application/x-www-form-urlencoded',
 		})

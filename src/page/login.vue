@@ -71,6 +71,7 @@
 							});
 							Global.token = res.token;
 							Global.islogin = true;
+							Global.username = this.loginForm.username;
 							this.$router.push('manage')
 						}else{
 							this.$message({

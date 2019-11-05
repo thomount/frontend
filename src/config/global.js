@@ -1,3 +1,4 @@
 let token = '';
 let islogin = false;
-export default {token, islogin}
+let username = '';
+export default {token, islogin, username}

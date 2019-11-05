@@ -22,7 +22,7 @@ export const signout = () => fetch('/api/user_logout/', {}, 'POST');
  * 获取用户信息
  */
 
-//export const getAdminInfo = () => fetch('/admin/info');
+export const getAdminInfo = () => fetch('/api/user_get_info', {}, 'POST');
 
 /**
  * api请求量
