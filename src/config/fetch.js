@@ -24,9 +24,9 @@ export default async(url = '', data = {}, type = 'GET', method = 'fetch') => {
 			var temp = JSON.stringify(data[item]);
 			if (data[item] != null && data[item].constructor == String) temp = data[item];
 //			console.log(temp);
-			datastring += item+'='+temp.replace(/\\"/g, '"').replace(/\\/g, '\\g').replace(/;/g, '\\:').replace(/\+/g, '\\j')+';'
+			datastring += item+'='+temp.replace(/\\"/g, '"').replace(/\\/g, '\\g').replace(/&/g, '\\9').replace(/;/g, '\\:').replace(/\+/g, '\\j')+';'
 		}
-//		console.log('datastring: '+datastring);
+		console.log('datastring: '+datastring);
 		let _headers = new Headers({
 			'Content-Type': 'application/x-www-form-urlencoded',
 		})

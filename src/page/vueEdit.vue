@@ -58,7 +58,7 @@
                 this.topped = document.getElementById("topped").checked;
 //                console.log(this.topped);
 //                console.log(this.title);
-//                console.log(this.content);
+                console.log(this.content);
                 const res = await richtext({'topped': this.topped, 'title': this.title, 'content': this.content})
                 if (res.status == 200) {
                     this.$message.success('提交成功！');
