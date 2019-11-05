@@ -23,10 +23,10 @@ export default async(url = '', data = {}, type = 'GET', method = 'fetch') => {
 		for (var item in data) {
 			var temp = JSON.stringify(data[item]);
 			if (data[item] != null && data[item].constructor == String) temp = data[item];
-			console.log(temp);
+//			console.log(temp);
 			datastring += item+'='+temp.replace(/\\"/g, '"').replace(/\\/g, '\\g').replace(/;/g, '\\:').replace(/\+/g, '\\j')+';'
 		}
-		console.log('datastring: '+datastring);
+//		console.log('datastring: '+datastring);
 		let _headers = new Headers({
 			'Content-Type': 'application/x-www-form-urlencoded',
 		})
@@ -51,7 +51,7 @@ export default async(url = '', data = {}, type = 'GET', method = 'fetch') => {
 			})
 		}
 
-		console.log(requestConfig);
+//		console.log(requestConfig);
 		try {
 			const response = await fetch(url, requestConfig);
 			const data = await response.json();
@@ -59,9 +59,9 @@ export default async(url = '', data = {}, type = 'GET', method = 'fetch') => {
 //			console.log(response);
 //			console.log(typeof data);
 //			console.log("response_end");
-			response.data = JSON.parse(data);
-			console.log('response:');
-			console.log(response);
+			if (data != null) response.data = JSON.parse(data);
+//			console.log('response:');
+//			console.log(response);
 			return response;
 		} catch (error) {
 			throw new Error(error)

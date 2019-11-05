@@ -164,7 +164,7 @@
 
 <script>
     import headTop from '@/components/headTop'
-    import {cityGuess, addShop, searchplace, foodCategory} from '@/api/getData'
+//    import {cityGuess, addShop, searchplace, foodCategory} from '@/api/getData'
     import {baseUrl, baseImgPath} from '@/config/env'
     export default {
     	data(){
