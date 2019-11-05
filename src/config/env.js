@@ -10,14 +10,14 @@ let baseUrl = 'http://183.172.140.221:8000';
 //let baseUrl = 'http://127.0.0.1:8000'; 
 
 let routerMode = 'hash';
-let baseImgPath;
+let baseImgPath = '/img/';
 
 if (process.env.NODE_ENV == 'development') {
 //	baseUrl = '';
-    baseImgPath = '/img/';
+//    baseImgPath = '/img/';
 }else{
 //	baseUrl = '//elm.cangdu.org';
-    baseImgPath = '//elm.cangdu.org/img/';
+//    baseImgPath = '//elm.cangdu.org/img/';
 }
 
 export {

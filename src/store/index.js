@@ -23,8 +23,7 @@ const actions = {
 			try{
 				const res = await getAdminInfo({username: Global.username})
 				if (res.status == 200) {
-					let userinfo = res;
-					delete userinfo.status;
+					let userinfo = res.data;
 					userinfo.username = Global.username;
 					commit('saveAdminInfo', userinfo);
 				}else{

@@ -28,6 +28,8 @@
 	import headTop from '../components/headTop'
     import {mapState} from 'vuex'
     import {baseUrl, baseImgPath} from '@/config/env'
+    import {getAdminInfo} from '@/api/getData'
+    import Global from '@/config/global'
 
     export default {
         data(){
@@ -44,6 +46,10 @@
         },
         methods: {
         },
+        activated() {
+            getAdminInfo({username: Global.username});
+        },
+
     }
 </script>
 

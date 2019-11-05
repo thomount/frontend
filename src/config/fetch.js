@@ -22,6 +22,7 @@ export default async(url = '', data = {}, type = 'GET', method = 'fetch') => {
 		let datastring = ''
 		for (var item in data) {
 			var temp = JSON.stringify(data[item]);
+			if (data[item] != null && data[item].constructor == String) temp = data[item];
 			console.log(temp);
 			datastring += item+'='+temp.replace(/\\"/g, '"').replace(/\\/g, '\\g').replace(/;/g, '\\:').replace(/\+/g, '\\j')+';'
 		}
@@ -54,16 +55,13 @@ export default async(url = '', data = {}, type = 'GET', method = 'fetch') => {
 		try {
 			const response = await fetch(url, requestConfig);
 			const data = await response.json();
-			console.log(data);
-			console.log(response);
+//			console.log(data);
+//			console.log(response);
 //			console.log(typeof data);
 //			console.log("response_end");
-			const _data = JSON.parse(data);
-			for (var i in _data) {
-				Object.defineProperty(response, i, {
-					value: _data[i]
-				})	
-			}
+			response.data = JSON.parse(data);
+			console.log('response:');
+			console.log(response);
 			return response;
 		} catch (error) {
 			throw new Error(error)
