@@ -8,7 +8,7 @@
 <script>
 	import headTop from '../components/headTop'
     import visitorPie from '@/components/visitorPie'
-	import {getUserCity} from '@/api/getData'
+//	import {getUserCity} from '@/api/getData'
     export default {
     	data(){
     		return {

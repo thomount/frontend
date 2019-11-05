@@ -33,12 +33,22 @@
                         <span>{{ }}</span>
                       </el-form-item>
                     </el-form>
+                    
                   </template>
                 </el-table-column>
                 <el-table-column
                   label="标题"
                   prop="title">
                 </el-table-column>
+                <el-table-column
+                  label="置顶"
+                  prop="istop">
+                    <template slot-scope="props">
+                        <span>{{props.row.istop}}</span>
+                        <el-button style="mini" @click="changeTop(props.$index)">修改</el-button>
+                    </template>
+                </el-table-column>
+
                 <el-table-column
                   label="作者"
                   prop="author">
@@ -118,14 +128,19 @@
                 <el-button type="primary" @click="updateShop">确 定</el-button>
               </div>
             </el-dialog>
+            <header class="rich_title">富文本详情</header>
+            <div class = 'rich_area'>
+                <p v-html = 'text'></p>
+            </div>
         </div>
     </div>
+
 </template>
 
 <script>
     import headTop from '../components/headTop'
     import {baseUrl, baseImgPath} from '@/config/env'
-    import {getRichlist, deleteRich, getrich} from '@/api/getData'
+    import {getRichlist, deleteRich, getrich, changetop} from '@/api/getData'
     export default {
         data(){
             return {
@@ -142,6 +157,7 @@
                 categoryOptions: [],
                 selectedCategory: [],
                 address: {},
+                text: '',
             }
         },
         activated(){
@@ -197,6 +213,12 @@
             async getRichlist(){
                 const res = await getRichlist();
                 this.tableData = res.data;
+                for (var i in this.tableData) {
+                    if (this.tableData[i].topped)
+                        this.tableData[i].istop = '是'
+                    else 
+                        this.tableData[i].istop = '否'
+                }
                 console.log(this.tableData);
             },
             handleSizeChange(val) {
@@ -211,29 +233,48 @@
                 console.log('查看富文本');
                 try {
                     const res = await getrich({id: this.tableData[index].id});
-                    console.log(res);
+//                    console.log(res);
+                    this.text = res.data;
                 }
                 catch (e) {
                     console.log(e);
                 }
 
-
             },
-            changeOrder(index, row){
+            async changeOrder(index, row){
                 console.log('更改顺序');
+            },
+
+            async changeTop(index) {
+                console.log('改变'+index+'置顶');
+                try {
+                    const res = await changetop({id: this.tableData[index].id});
+                    if (res.status == 200) {
+                        this.getRichlist();
+                        this.$message({
+                            type: 'success',
+                            message: '修改置顶成功'
+                        });
+                    }
+
+                } catch (e) {
+                    console.log(e);
+                }
             },
             async handleDelete(index, row) {
                 try{
                     const res = await deleteRich({id: row.id});
+                    console.log(res);
                     if (res.status == 200) {
                         this.$message({
                             type: 'success',
                             message: '删除店铺成功'
                         });
-                        this.getRichlist();
+
                     }else{
                         throw new Error(res.message)
                     }
+                    this.getRichlist();
                 }catch(err){
                     this.$message({
                         type: 'error',
@@ -242,6 +283,7 @@
                     console.log('删除店铺失败')
                 }
             },
+
             async querySearchAsync(queryString, cb) {
                 if (queryString) {
                     try{
@@ -351,5 +393,26 @@
         width: 120px;
         height: 120px;
         display: block;
+    }
+    .rich_title{
+        margin-top: 20px;
+        margin-left: 20px;
+//        margin-bottom: 20px;
+        .sc(24px, #666);
+//      text-align: center;
+    }
+    .rich_area{
+//        width: 90%;
+//        margin-left: 20px;
+        background-color: #F9FAFC;
+        min-height: 400px;
+        margin: 20px;
+        border-radius: 10px;
+        ul > li{
+            padding: 20px;
+            span{
+                color: #666;
+            }
+        }
     }
 </style>

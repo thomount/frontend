@@ -41,7 +41,7 @@
 
 <script>
     import headTop from '../components/headTop'
-    import {adminList, adminCount} from '@/api/getData'
+//    import {adminList, adminCount} from '@/api/getData'
     export default {
         data(){
             return {
