@@ -12,6 +12,8 @@ export const myregister = data => fetch('/api/user_register/', data, 'POST');
 
 export const richtext = data => fetch('/api/rich_upload/', data, 'POST');
 
+export const getrich = data => fetch('/api/rich_render/', data, 'POST');
+
 /**
  * 退出
  */

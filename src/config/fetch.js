@@ -59,7 +59,6 @@ export default async(url = '', data = {}, type = 'GET', method = 'fetch') => {
 //			console.log(response);
 //			console.log(typeof data);
 //			console.log("response_end");
-			const _data = JSON.parse(data);
 			response.data = JSON.parse(data);
 			console.log('response:');
 			console.log(response);

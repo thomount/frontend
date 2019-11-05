@@ -125,7 +125,7 @@
 <script>
     import headTop from '../components/headTop'
     import {baseUrl, baseImgPath} from '@/config/env'
-    import {getRichlist, deleteRich} from '@/api/getData'
+    import {getRichlist, deleteRich, getrich} from '@/api/getData'
     export default {
         data(){
             return {
@@ -144,7 +144,7 @@
                 address: {},
             }
         },
-        created(){
+        activated(){
             this.initData();
             console.log(11111)
         },
@@ -196,23 +196,7 @@
             },
             async getRichlist(){
                 const res = await getRichlist();
-                var ret = new Array();
-                for (var i in res.data) {
-                    var x = res.data[i];
-                    var y = {};
-                    console.log(x);
-                    for (var item in x) {
-                        console.log(x[item]);
-                        if (x[item] != null) console.log(x[item].constructor == String);
-                        if (x[item]!= null && x[item].constructor == String) 
-                            y[item] = x[item].substring(1, x[item].length-1);
-                        else 
-                            y[item] = x[item];
-                    }
-                    ret.push(y);
-                    console.log(y);
-                }
-                this.tableData = ret;
+                this.tableData = res.data;
                 console.log(this.tableData);
             },
             handleSizeChange(val) {
@@ -223,8 +207,17 @@
                 this.offset = (val - 1)*this.limit;
                 this.getResturants()
             },
-            checkRich(index, row) {
+            async checkRich(index, row) {
                 console.log('查看富文本');
+                try {
+                    const res = await getrich({id: this.tableData[index].id});
+                    console.log(res);
+                }
+                catch (e) {
+                    console.log(e);
+                }
+
+
             },
             changeOrder(index, row){
                 console.log('更改顺序');
