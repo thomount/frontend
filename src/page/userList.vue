@@ -20,7 +20,7 @@
                   label="充值金额"
                   width="">
                   <template slot-scope="scope">
-                    <span>{{scope.row.base}}</span>
+                    <span>￥{{scope.row.base}}</span>
                     <el-button
                       size="mini"
                       @click="change(scope.$index, 'base')">修改</el-button>
@@ -32,7 +32,7 @@
                   label="赠送金额"
                   width="">
                   <template slot-scope="scope">
-                    <span>{{scope.row.bonus}}</span>
+                    <span>￥{{scope.row.bonus}}</span>
                     <el-button
                       size="mini"
                       @click="change(scope.$index, 'bonus')">修改</el-button>
@@ -75,12 +75,26 @@
                 </el-pagination>
             </div>
         </div>
+        <div>
+        <el-input slot="reference" v-model="obj" style="width:300px" placeholder="请输入内容"></el-input>
+        </div>
+        <el-dialog
+            title="提示"
+            :visible.sync="dv"
+            width="30%"
+            :before-close="handleClose">
+            <textarea id="input" placeholder="请输入修改后的值"></textarea>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="cancelEdit">取 消</el-button>
+                <el-button type="primary" @click="submitEdit">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
 <script>
     import headTop from '../components/headTop'
-    import {getChargelist} from '@/api/getData'
+    import {getChargelist, changeCharge} from '@/api/getData'
     export default {
         data(){
             return {
@@ -90,6 +104,8 @@
                 limit: 20,
                 count: 0,
                 currentPage: 1,
+                dv: false, 
+                editing: null,
             }
         },
     	components: {
@@ -117,9 +133,11 @@
                 var ret = [];
                 for (var i in data) {
                     var x = data[i];
+                    if (x.level == null) x.level = 0;
+                    if (x.cut == null) x.cut = 0;
                     switch (x.choice) {
                         case 1:
-                            x.desc = "满"+x.base+"元送"+x.bonus+"元";
+                            x.desc = "会员"+x.level+"级以上满"+x.base+"元送"+x.bonus+"元";
                             break; 
                         case 2:
                             x.desc = "全部"+x.cut+"折";
@@ -140,9 +158,61 @@
                 this.offset = (val - 1)*this.limit;
                 this.getUsers()
             },
-            change(index, str) {
-                
-            }
+            change(_index, _str) {
+                this.dv = true;
+                this.editing = {
+                    index: _index,
+                    item: _str,
+                }
+            },
+            cancelEdit() {
+                this.editing = null;
+                this.dv = false;
+            },
+            submitEdit() {
+                var target_value = document.getElementById("input").value;
+                if (this.isNumber(target_value)) {
+                    var target_value_num = ~~(target_value);
+                    var flag = true;
+                    if (this.editing.item == "cut" && (target_value_num < 0 || target_value_num > 10)) flag = false;
+                    if (this.editing.item == "level" && (target_value_num < 0 || target_value_num > 10)) flag = false;
+                    if (flag) {
+                        var data = this.tableData[this.editing.index];
+                        data.id = this.editing.index;
+                        data[this.editing.item] = target_value_num;
+                        console.log(data);
+                        this.sendChange(data);
+                    }
+                } else {
+                    this.$message({
+                        type: "error",
+                        message: "请输入数字",
+                    })
+                }
+                this.initData();
+                this.dv = false;
+                this.editing = null;
+            },
+            async sendChange(data) {
+                const res = await changeCharge(data);
+                if (res.status == 200) {
+                    this.$message({
+                        type: "success",
+                        message: "修改成功",
+                    })
+                } else {
+                    this.$message({
+                        type: "error",
+                        message: "修改失败",
+                    })
+                }
+            },
+            isNumber(val) {
+                var regPos = /^\d+(\.\d+)?$/; //非负浮点数
+                var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
+                if(regPos.test(val) || regNeg.test(val)) return true; else return false;
+            },
+
         },
     }
 </script>
