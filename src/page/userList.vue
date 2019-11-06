@@ -178,8 +178,8 @@
                     if (this.editing.item == "level" && (target_value_num < 0 || target_value_num > 10)) flag = false;
                     if (flag) {
                         var data = this.tableData[this.editing.index];
-                        data.id = this.editing.index;
                         data[this.editing.item] = target_value_num;
+                        console.log('change data');
                         console.log(data);
                         this.sendChange(data);
                     }

@@ -26,4 +26,4 @@ export const changePsw = data => fetch('/api/user_change_psw/', data, 'POST');
 
 export const getChargelist = data => fetch('/api/get_discount/', data, 'POST');
 
-export const changeCharge = data => fetch('/api/get_discount/', data, 'POST');
+export const changeCharge = data => fetch('/api/change_discount/', data, 'POST');
