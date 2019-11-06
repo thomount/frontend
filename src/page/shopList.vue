@@ -268,7 +268,7 @@
                     if (res.status == 200) {
                         this.$message({
                             type: 'success',
-                            message: '删除店铺成功'
+                            message: '删除富文本成功'
                         });
 
                     }else{
@@ -280,7 +280,7 @@
                         type: 'error',
                         message: err.message
                     });
-                    console.log('删除店铺失败')
+                    console.log('删除富文本失败')
                 }
             },
 
