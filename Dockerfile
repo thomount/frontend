@@ -9,7 +9,8 @@ WORKDIR $FRONTEND
 
 COPY package.json $FRONTEND
 COPY package-lock.json $FRONTEND
-RUN npm install
+RUN npm install -g cnpm --registry=https://registry.npm.taobao.org
+    cnpm install
 
 COPY . $FRONTEND
 RUN npm run build
