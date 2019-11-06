@@ -18,7 +18,7 @@ build:
 unit-test:
   image: node:10.16.1
   stage: test
-  before-script:     
+  before_script:     
     - npm config set registry https://registry.npm.taobao.org
     - npm install
 
@@ -34,7 +34,7 @@ unit-test:
 style-test:
   image: node:10.16.1
   stage: test
-  before-script:
+  before_script:
     - npm config set registry https://registry.npm.taobao.org
     - npm install
   script:
