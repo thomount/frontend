@@ -75,9 +75,6 @@
                 </el-pagination>
             </div>
         </div>
-        <div>
-        <el-input slot="reference" v-model="obj" style="width:300px" placeholder="请输入内容"></el-input>
-        </div>
         <el-dialog
             title="提示"
             :visible.sync="dv"
@@ -189,7 +186,7 @@
                         message: "请输入数字",
                     })
                 }
-                this.initData();
+
                 this.dv = false;
                 this.editing = null;
             },
@@ -199,7 +196,8 @@
                     this.$message({
                         type: "success",
                         message: "修改成功",
-                    })
+                    })                
+                    this.initData();
                 } else {
                     this.$message({
                         type: "error",
