@@ -20,7 +20,7 @@ RUN npm run build
 
 #WORKDIR $HOME
 
-# Copy frontend from the first stage
+#Copy frontend from the first stage
 #COPY --from=0 /opt/frontend/build dist
 #COPY nginx/ nginx/
 
