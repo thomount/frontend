@@ -1,15 +1,6 @@
-# First stage, build the frontend
-FROM node:10.16.1
-
-RUN npm config set registry https://registry.npm.taobao.org
-
-ENV FRONTEND=/opt/frontend
-
-WORKDIR $FRONTEND
-
-COPY package.json $FRONTEND
-COPY package-lock.json $FRONTEND
-RUN npm install
-
-COPY . $FRONTEND
-RUN npm run build
+FROM xxx/docker/nginx:1.13.6
+COPY ./dist /var/www/html
+COPY ./im-dashboard.conf /etc/nginx/conf.d/ 
+RUN rm /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx","-g","daemon off;"]
