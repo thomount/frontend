@@ -57,11 +57,15 @@ export default async(url = '', data = {}, type = 'GET', method = 'fetch') => {
 //			console.log(response);			
 			try{
 				const data = await response.json();
-//				console.log(data);
+				console.log(data);
 	//			console.log(typeof data);
 	//			console.log("response_end");
-				if (data != null) response.data = JSON.parse(data);
+				if (data != null) {
+					if(data.constructor == String) response.data = JSON.parse(data);
+						else response.data = data;
+				}
 			} catch(e) {
+				console.log(e);
 				console.log('no data');
 			}
 //			console.log('response:');
