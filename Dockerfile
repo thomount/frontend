@@ -14,7 +14,6 @@ RUN npm install
 COPY . $FRONTEND
 RUN npm run build
 
-# Second stage
 #FROM nginx:1.16.1
 
 #ENV HOME=/opt/app
