@@ -6,7 +6,7 @@
 			<el-breadcrumb-item v-for="(item, index) in $route.meta" :key="index">{{item}}</el-breadcrumb-item>
 		</el-breadcrumb>
 		<el-dropdown @command="handleCommand" menu-align='start'>
-			<img :src="baseImgPath + adminInfo.avatar" class="avator">
+			<img :src="imgUrl" class="avator">
 			<el-dropdown-menu slot="dropdown">
 				<el-dropdown-item command="home">首页</el-dropdown-item>
 				<el-dropdown-item command="adminSet">个人</el-dropdown-item>
@@ -21,11 +21,13 @@
 	import {baseImgPath} from '@/config/env'
 	import Global from '@/config/global'
 	import {mapActions, mapState} from 'vuex'
+	import imgurl from '../assets/img/avator.jpg'
 
     export default {
     	data(){
     		return {
-    			baseImgPath,
+				baseImgPath,
+				imgUrl: imgurl,
     		}
     	},
     	created(){
