@@ -79,7 +79,7 @@
             title="提示"
             :visible.sync="dv"
             width="30%"
-            :before-close="handleClose">
+            >
             <textarea id="input" placeholder="请输入修改后的值"></textarea>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="cancelEdit">取 消</el-button>
