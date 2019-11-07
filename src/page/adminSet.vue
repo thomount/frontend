@@ -19,9 +19,9 @@
                 <li>
                     <span>联系电话：</span><span>{{adminInfo.phone}}</span>
                 </li>
-                <li class="text-area">
-                    <span>新密码：</span>
-                    <textarea placeholder="请输入新密码" id='new_psw'></textarea>
+                <li style='height: 20px;'>
+                    <span style='height: 20px;'>新密码：</span>
+                    <textarea placeholder="请输入新密码" id='new_psw' style='height: 20px; width: 50%'></textarea>
                 </li>                
                 <li>
                     <el-button @click="submit()">确定修改</el-button>
