@@ -14,6 +14,10 @@
 		        prop="levelname"
 		        label="用户权限等级"
 		       >
+                     <template slot-scope="props">
+                        <span>{{props.row.levelname}}</span>
+                        <el-button style="mini" @click="change_Auth(props.$index, rops.row.levelname)">修改</el-button>
+                    </template>              
 		      </el-table-column>
               <el-table-column
                 prop="edit_rich_name"
@@ -54,6 +58,23 @@
                 </el-pagination>
             </div>
         </div>
+        <el-dialog
+            title="提示"
+            :visible.sync="dv"
+            width="30%">
+            <el-select v-model="activityValue" :placeholder="activityValue">
+                <el-option
+                    v-for="item in options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                </el-option>
+            </el-select>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dv=false">取 消</el-button>
+                <el-button type="primary" @click="submitEdit">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -69,6 +90,19 @@
                 limit: 20,
                 count: 0,
                 currentPage: 1,
+                dv: true,
+				options: [{
+		          	value: '高级管理员',
+		          	label: '高级管理员'
+		        }, {
+		          	value: '中级管理员',
+		          	label: '中级管理员'
+		        }, {
+		          	value: '渠道商',
+		          	label: '渠道商'
+		        }],
+                activityValue: '用户权限',
+                editing: 0,    
             }
         },
     	components: {
@@ -120,7 +154,7 @@
                 this.offset = (val - 1)*this.limit;
                 this.getAdmin()
             },
-            async change_editAuth(index, pos) {
+            async change_editAuth(index, pos, value = 0) {
                 try{
                     var data = this.tableData[index];
                     switch (pos) {
@@ -133,11 +167,13 @@
                         case 2:
                             data.edit_config = !data.edit_config;
                             break;
+                        case 3:
+                            data.level = value;
+                            break;
                     }
                     delete data.edit_rich_name;
                     delete data.edit_charge_name;
                     delete data.edit_config_name;
-                    delete data.level;
                     delete data.levelname;
                     console.log('change auth');
                     console.log(data);
@@ -158,6 +194,37 @@
                 }
                 this.initData();
             },
+
+            change_Auth(index, str) {
+                this.editing = index;
+                this.activityValue = str;
+                this.dv = true;
+            },
+            submitEdit() {
+                console.log(this.activityValue);
+                if (this.activityValue == this.tableData[this.editing].levelname) {
+                    this.$message({
+                        type: 'success',
+                        message: '无修改',
+                    })
+                    this.dv = false;
+                    return;
+                }
+                var tarValue = 0;
+                switch (this.activityValue) {
+                    case "高级管理员":
+                        tarValue = 2;
+                        break;
+                    case "中级管理员":
+                        tarValue = 1;
+                        break;
+                    case "渠道商":
+                        tarValue = 0;
+                        break;
+                }
+                this.change_editAuth(this.editing, 3, tarValue);
+                this.dv = false;
+            }
 
         },
     }
