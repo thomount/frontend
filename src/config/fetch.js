@@ -51,7 +51,7 @@ export default async(url = '', data = {}, type = 'GET', method = 'fetch') => {
 			})
 		}
 
-//		console.log(requestConfig);
+		console.log(requestConfig);
 		try {
 			const response = await fetch(url, requestConfig);
 //			console.log(response);			

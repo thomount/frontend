@@ -12,7 +12,7 @@
 					</el-submenu>
 					<el-submenu index="4">
 						<template slot="title"><i class="el-icon-star-on"></i>图表</template>
-						<el-menu-item index="visitor">统计报表</el-menu-item>
+						<el-menu-item index="status">统计报表</el-menu-item>
 						<!-- <el-menu-item index="newMember">用户数据</el-menu-item> -->
 					</el-submenu>
 					<el-submenu index="5">

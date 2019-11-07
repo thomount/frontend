@@ -17,6 +17,9 @@
                     <span>设置运行参数权限：</span><span>{{adminInfo.edit_config}}</span>
                 </li>
                 <li>
+                    <span>管理员等级：</span><span>{{adminInfo.level}}</span>
+                </li>
+                <li>
                     <span>联系电话：</span><span>{{adminInfo.phone}}</span>
                 </li>
                 <li style='height: 20px;'>
@@ -55,6 +58,7 @@
         },
         activated() {
             getAdminInfo({username: Global.username});
+//            this.initData();
         },
         async submit() {
             var new_psw = document.getElementById("new_psw").value;
@@ -74,6 +78,10 @@
             } catch (e) {
                 console.log(e);
             }
+        },
+        async initData() {
+            const res = await getAdminInfo({username: Global.username});
+
         }
     }
 </script>

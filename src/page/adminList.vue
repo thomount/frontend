@@ -16,7 +16,7 @@
 		       >
                      <template slot-scope="props">
                         <span>{{props.row.levelname}}</span>
-                        <el-button style="mini" @click="change_Auth(props.$index, rops.row.levelname)">修改</el-button>
+                        <el-button style="mini" @click="change_Auth(props.$index, props.row.levelname)">修改</el-button>
                     </template>              
 		      </el-table-column>
               <el-table-column
@@ -90,7 +90,7 @@
                 limit: 20,
                 count: 0,
                 currentPage: 1,
-                dv: true,
+                dv: false,
 				options: [{
 		          	value: '高级管理员',
 		          	label: '高级管理员'
@@ -120,13 +120,13 @@
                         for (var i in res.data) {
                             var x = res.data[i];
                             switch (x.level) {
-                                case 2:
+                                case 0:
                                     x.levelname = "高级用户";
                                     break;
                                 case 1:
                                     x.levelname = "中级用户";
                                     break;
-                                case 0:
+                                case 2:
                                     x.levelname = "渠道商";
                                     break;
                                 default:
@@ -213,13 +213,13 @@
                 var tarValue = 0;
                 switch (this.activityValue) {
                     case "高级管理员":
-                        tarValue = 2;
+                        tarValue = 0;
                         break;
                     case "中级管理员":
                         tarValue = 1;
                         break;
                     case "渠道商":
-                        tarValue = 0;
+                        tarValue = 2;
                         break;
                 }
                 this.change_editAuth(this.editing, 3, tarValue);
