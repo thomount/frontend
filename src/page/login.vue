@@ -3,7 +3,7 @@
 	  	<transition name="form-fade" mode="in-out">
 	  		<section class="form_contianer" v-show="showLogin">
 		  		<div class="manage_tip">
-		  			<p>elm后台管理系统</p>
+		  			<p>安提思 后台管理系统</p>
 		  		</div>
 		    	<el-form :model="loginForm" :rules="rules" ref="loginForm">
 					<el-form-item prop="username">
@@ -12,10 +12,12 @@
 					<el-form-item prop="password">
 						<el-input type="password" placeholder="密码" v-model="loginForm.password"></el-input>
 					</el-form-item>
-					<el-form-item>
+					<el-form-item >
 				    	<el-button type="primary" @click="submitloginForm('loginForm')" class="submit_btn">登陆</el-button>
+
 						<el-button type="primary" @click="submitregisterForm('loginForm')" class="submit_btn">注册</el-button>
-				  	</el-form-item>
+					</el-form-item>
+
 				</el-form>
 				<p class="tip">温馨提示：</p>
 				<p class="tip">未登录过的新用户，自动注册</p>
@@ -154,8 +156,9 @@
 		text-align: center;
 		background-color: #fff;
 		.submit_btn{
-			width: 100%;
+			width: 45%;
 			font-size: 16px;
+//			padding-bottom: 5px;
 		}
 	}
 	.tip{
