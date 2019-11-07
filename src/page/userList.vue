@@ -8,12 +8,12 @@
                 style="width: 100%">
                 <el-table-column
                   type="index"
-                  width="100">
+                  width="40">
                 </el-table-column>
                 <el-table-column
                   property="desc"
                   label="描述"
-                  width="400">
+                  width="240">
                 </el-table-column>
                 <el-table-column
                   property="base"
@@ -27,6 +27,7 @@
                   </template>
 
                 </el-table-column>
+
                 <el-table-column
                   property="bonus"
                   label="赠送金额"
@@ -42,7 +43,7 @@
                 <el-table-column
                   property="cut"
                   label="折扣"
-                  width="">
+                  width="90">
                   <template slot-scope="scope">
                     <span>{{scope.row.cut}}</span>
                     <el-button
@@ -54,7 +55,7 @@
                 <el-table-column
                   property="level"
                   label="vip等级"
-                  width="">
+                  width="90">
                   <template slot-scope="scope">
                     <span>{{scope.row.level}}</span>
                     <el-button
@@ -62,6 +63,18 @@
                       @click="change(scope.$index, 'level')">修改</el-button>
                   </template>
 
+                </el-table-column>
+                <el-table-column
+                  property="start"
+                  label="起始日期"
+                  width="120"
+                  >
+                </el-table-column>
+                <el-table-column
+                  property="end"
+                  label="结束日期"
+                  width="120"
+                  >
                 </el-table-column>
             </el-table>
             <div class="Pagination" style="text-align: left;margin-top: 10px;">

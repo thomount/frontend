@@ -45,6 +45,9 @@
                   layout="total, prev, pager, next"
                   :total="count">
                 </el-pagination>
+                <el-button @click="changePeriod(12, 'month')">按月查询</el-button>
+                <el-button @click="changePeriod(30, 'day')">按日查询</el-button>
+                <el-button @click="changePeriod(60, 'minutes')">按分钟查询</el-button>
             </div>
 
         </div>
@@ -73,6 +76,8 @@
                 selectedCategory: [],
                 address: {},
                 text: '',
+                _num_p: 12,
+                _p: 'month',
             }
         },
         activated(){
@@ -85,8 +90,8 @@
         methods: {
             async initData(){
                 try{
-                    const res = await getStatlist({num_periods: 12, period: "month"});
-//                    console.log(res);
+                    const res = await getStatlist({num_periods: this._num_p, period: this._p});
+                    console.log(res);
                     if (res.status == 200) {
                         console.log('rich list');
                         console.log(res);
@@ -202,6 +207,11 @@
                     console.log('更新餐馆信息失败', err);
                 }
             },
+            changePeriod(__num_p, __p) {
+                this._num_p = __num_p;
+                this._p = __p;
+                this.initData();
+            }
         },
     }
 </script>

@@ -5,7 +5,7 @@
 				<el-menu :default-active="defaultActive" style="min-height: 100%;" theme="dark" router>
 					<el-submenu index="2">
 						<template slot="title"><i class="el-icon-document"></i>数据管理</template>
-						<el-menu-item index="shopList">富文本列表</el-menu-item>
+						<el-menu-item index="shopList">图文列表</el-menu-item>
 						<el-menu-item index="adminList">管理员列表</el-menu-item>
 						<el-menu-item index="userList">充值活动列表</el-menu-item>
 
@@ -18,7 +18,7 @@
 					<el-submenu index="5">
 						<template slot="title"><i class="el-icon-edit"></i>编辑</template>
 						<!-- <el-menu-item index="uploadImg">上传图片</el-menu-item> -->
-						<el-menu-item index="vueEdit">富文本编辑</el-menu-item>
+						<el-menu-item index="vueEdit">图文编辑</el-menu-item>
 					</el-submenu>
 					<el-submenu index="6">
 						<template slot="title"><i class="el-icon-setting"></i>设置</template>

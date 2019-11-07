@@ -21,7 +21,7 @@
 		      </el-table-column>
               <el-table-column
                 prop="edit_rich_name"
-                label="编辑富文本权限"
+                label="编辑图文权限"
                 >
                     <template slot-scope="props">
                         <span>{{props.row.edit_rich_name}}</span>

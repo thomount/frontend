@@ -8,7 +8,7 @@
                     <span>姓名：</span><span>{{adminInfo.username}}</span>
                 </li>
                 <li>
-                    <span>编辑富文本权限：</span><span>{{adminInfo.edit_rich}}</span>
+                    <span>编辑图文权限：</span><span>{{adminInfo.edit_rich}}</span>
                 </li>
                 <li>
                     <span>编辑充值项目权限：</span><span>{{adminInfo.edit_charge}}</span>
