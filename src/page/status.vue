@@ -1,10 +1,14 @@
 <template>
     <div class="fillcontain">
         <head-top></head-top>
+        <div style="item-align: center;">
+            <img :src="imgurl">
+        </div>
         <div class="table_container">
             <el-table
                 :data="tableData"
                 style="width: 100%">
+                <!--
                 <el-table-column type="expand">
                   <template slot-scope="props">
                     <el-form label-position="left" inline class="demo-table-expand">
@@ -21,6 +25,7 @@
                     
                   </template>
                 </el-table-column>
+                -->
                 <el-table-column
                   type="index"
                   label="id"
@@ -45,9 +50,10 @@
                   layout="total, prev, pager, next"
                   :total="count">
                 </el-pagination>
-                <el-button @click="changePeriod(12, 'month')">按月查询</el-button>
-                <el-button @click="changePeriod(30, 'day')">按日查询</el-button>
-                <el-button @click="changePeriod(60, 'minutes')">按分钟查询</el-button>
+                <el-button @click="changePeriod('month')">按月查询</el-button>
+                <el-button @click="changePeriod('day')">按日查询</el-button>
+                <el-button @click="changePeriod('minutes')">按分钟查询</el-button>
+                <textarea id="text" placeholder="查询数量(1~15)" style="padding-left:10px;width:20%;"></textarea>
             </div>
 
         </div>
@@ -66,7 +72,7 @@
                 baseImgPath,
                 city: {},
                 offset: 0,
-                limit: 20,
+                limit: 50,
                 count: 0,
                 tableData: [],
                 currentPage: 1,
@@ -78,7 +84,7 @@
                 text: '',
                 _num_p: 12,
                 _p: 'month',
-                url:'',
+                imgurl:'',
             }
         },
         activated(){
@@ -98,7 +104,8 @@
                         console.log(res);
                         this.tableData = res.data.data;
                         this.count = this.tableData.length;
-                        this.url = res.data.url;
+                        this.imgurl = baseUrl+"/"+res.data.url;
+                        console.log('img: '+this.imgurl);
                     }else{
                         throw new Error('获取数据失败');
                     }
@@ -112,7 +119,7 @@
             handleCurrentChange(val) {
                 this.currentPage = val;
                 this.offset = (val - 1)*this.limit;
-                this.getResturants()
+                this.initData()
             },
             async checkRich(index, row) {
                 console.log('查看图文');
@@ -199,7 +206,7 @@
                             type: 'success',
                             message: '更新店铺信息成功'
                         });
-                        this.getResturants();
+                        this.initData();
                     }else{
                         this.$message({
                             type: 'error',
@@ -210,8 +217,10 @@
                     console.log('更新餐馆信息失败', err);
                 }
             },
-            changePeriod(__num_p, __p) {
-                this._num_p = __num_p;
+            changePeriod(__p) {
+//                console.log(document.getElementById('text'));
+                this._num_p = ~~document.getElementById('text').value;
+                console.log('number: '+ this._num_p);
                 this._p = __p;
                 this.initData();
             }
