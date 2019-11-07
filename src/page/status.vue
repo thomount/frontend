@@ -78,6 +78,7 @@
                 text: '',
                 _num_p: 12,
                 _p: 'month',
+                url:'',
             }
         },
         activated(){
@@ -93,9 +94,11 @@
                     const res = await getStatlist({num_periods: this._num_p, period: this._p});
                     console.log(res);
                     if (res.status == 200) {
-                        console.log('rich list');
+                        console.log('Stat list');
                         console.log(res);
-                        this.tableData = res.data;
+                        this.tableData = res.data.data;
+                        this.count = this.tableData.length;
+                        this.url = res.data.url;
                     }else{
                         throw new Error('获取数据失败');
                     }
@@ -112,7 +115,7 @@
                 this.getResturants()
             },
             async checkRich(index, row) {
-                console.log('查看富文本');
+                console.log('查看图文');
                 try {
                     const res = await getrich({id: this.tableData[index].id});
 //                    console.log(res);
@@ -130,7 +133,7 @@
                     if (res.status == 200) {
                         this.$message({
                             type: 'success',
-                            message: '删除富文本成功'
+                            message: '删除图文成功'
                         });
 
                     }else{
@@ -142,7 +145,7 @@
                         type: 'error',
                         message: err.message
                     });
-                    console.log('删除富文本失败')
+                    console.log('删除图文失败')
                 }
             },
 

@@ -128,7 +128,7 @@
                 <el-button type="primary" @click="updateShop">确 定</el-button>
               </div>
             </el-dialog>
-            <header class="rich_title">富文本详情</header>
+            <header class="rich_title">图文详情</header>
             <div class = 'rich_area'>
                 <p v-html = 'text'></p>
             </div>
@@ -230,7 +230,7 @@
                 this.getResturants()
             },
             async checkRich(index, row) {
-                console.log('查看富文本');
+                console.log('查看图文');
                 try {
                     const res = await getrich({id: this.tableData[index].id});
 //                    console.log(res);
@@ -268,7 +268,7 @@
                     if (res.status == 200) {
                         this.$message({
                             type: 'success',
-                            message: '删除富文本成功'
+                            message: '删除图文成功'
                         });
 
                     }else{
@@ -280,7 +280,7 @@
                         type: 'error',
                         message: err.message
                     });
-                    console.log('删除富文本失败')
+                    console.log('删除图文失败')
                 }
             },
 
