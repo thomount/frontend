@@ -2,6 +2,7 @@
 FROM node:10.16.1
 
 RUN npm install -g cnpm --registry=https://registry.npm.taobao.org
+RUN npm i -D uglifyjs-webpack-plugin@beta
 
 ENV FRONTEND=/opt/frontend
 
