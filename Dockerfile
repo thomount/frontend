@@ -2,7 +2,6 @@
 FROM node:10.16.1
 
 RUN npm install -g cnpm --registry=https://registry.npm.taobao.org
-RUN npm i -D uglifyjs-webpack-plugin@beta
 
 ENV FRONTEND=/opt/frontend
 
@@ -11,6 +10,8 @@ WORKDIR $FRONTEND
 COPY package.json $FRONTEND
 COPY package-lock.json $FRONTEND
 RUN cnpm install
+RUN cnpm i -D uglifyjs-webpack-plugin@beta
+RUN cnpm install --save-dev compression-webpack-plugin@1.1.12
 
 COPY . $FRONTEND
 RUN npm run build
