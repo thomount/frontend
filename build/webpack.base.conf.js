@@ -44,7 +44,7 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [resolve('src'), resolve('test'), resolve('/node_modules/time-formater/lib')]
+        include: [resolve('src'), resolve('test'), resolve('/node_modules/time-formater/lib'), resolve('/node_modules/_time-formater@1.1.3@time-formater/lib')]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
