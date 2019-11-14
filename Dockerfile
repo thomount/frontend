@@ -1,5 +1,5 @@
 # First stage, build the frontend
-FROM node:10.16.3
+FROM node:10.16.1
 
 RUN npm install -g cnpm --registry=https://registry.npm.taobao.org
 
