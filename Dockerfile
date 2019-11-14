@@ -1,7 +1,7 @@
 # First stage, build the frontend
 FROM node:10.16.1
 
-RUN npm install -g cnpm --registry=https://registry.npm.taobao.org
+#RUN npm install -g cnpm --registry=https://registry.npm.taobao.org
 
 ENV FRONTEND=/opt/frontend
 
@@ -11,7 +11,7 @@ WORKDIR $FRONTEND
 #COPY package-lock.json $FRONTEND
 #RUN cnpm install
 
-COPY . $FRONTEND
+#COPY . $FRONTEND
 #RUN npm run build
 
 #FROM nginx:1.16.1
