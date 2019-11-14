@@ -7,12 +7,12 @@ ENV FRONTEND=/opt/frontend
 
 WORKDIR $FRONTEND
 
-COPY package.json $FRONTEND
-COPY package-lock.json $FRONTEND
-RUN cnpm install
+#COPY package.json $FRONTEND
+#COPY package-lock.json $FRONTEND
+#RUN cnpm install
 
 COPY . $FRONTEND
-RUN npm run build
+#RUN npm run build
 
 #FROM nginx:1.16.1
 
