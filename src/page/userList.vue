@@ -67,14 +67,26 @@
                 <el-table-column
                   property="start"
                   label="起始日期"
-                  width="120"
+                  width="200"
                   >
+                  <template slot-scope="scope">
+                    <span>{{scope.row.start}}</span>
+                    <el-button
+                      size="mini"
+                      @click="change(scope.$index, 'start')">修改</el-button>
+                  </template>
                 </el-table-column>
                 <el-table-column
                   property="end"
                   label="结束日期"
-                  width="120"
+                  width="200"
                   >
+                  <template slot-scope="scope">
+                    <span>{{scope.row.end}}</span>
+                    <el-button
+                      size="mini"
+                      @click="change(scope.$index, 'end')">修改</el-button>
+                  </template>
                 </el-table-column>
             </el-table>
             <div class="Pagination" style="text-align: left;margin-top: 10px;">
@@ -181,14 +193,27 @@
             },
             submitEdit() {
                 var target_value = document.getElementById("input").value;
-                if (this.isNumber(target_value)) {
+                if (this.isNumber(target_value) || this.editing.item == 'start' || this.editing.item == 'end') {
                     var target_value_num = ~~(target_value);
                     var flag = true;
                     if (this.editing.item == "cut" && (target_value_num < 0 || target_value_num > 10)) flag = false;
                     if (this.editing.item == "level" && (target_value_num < 0 || target_value_num > 10)) flag = false;
+                    if (this.editing.item == 'start' || this.editing.item == 'end') {
+                        if (this.valid_time(target_value)) {
+                            target_value_num = target_value;
+                        } else {
+                            flag = false;
+                            this.$message({
+                                type: "error",
+                                message: "请输入合法日期",
+                            })                            
+                        }
+                    }
                     if (flag) {
                         var data = this.tableData[this.editing.index];
                         data[this.editing.item] = target_value_num;
+                        data['start'] += ' 00:00:00';
+                        data['end'] += ' 23:59:59';
                         console.log('change data');
                         console.log(data);
                         this.sendChange(data);
@@ -223,7 +248,9 @@
                 var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
                 if(regPos.test(val) || regNeg.test(val)) return true; else return false;
             },
-
+            valid_time(data) {
+                if(isNaN(data)&&!isNaN(Date.parse(data))) return true; else return false;
+            }
         },
     }
 </script>

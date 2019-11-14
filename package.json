@@ -15,10 +15,11 @@
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs"
   },
   "dependencies": {
-    "echarts": "^3.5.4",
+    "echarts": "^4.4.0",
     "element-ui": "^1.2.9",
     "time-formater": "^1.0.1",
     "vue": "^2.2.6",
+    "vue-echarts": "^4.0.4",
     "vue-quill-editor": "^2.2.1",
     "vue-router": "^2.3.1",
     "vue-simplemde": "^0.3.8",

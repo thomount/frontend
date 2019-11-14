@@ -44,7 +44,17 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [resolve('src'), resolve('test'), resolve('/node_modules/time-formater/lib'), resolve('/node_modules/_time-formater@1.1.3@time-formater/lib')]
+        include: [
+          resolve('src'), 
+          resolve('test'), 
+          resolve('/node_modules/time-formater/lib'), 
+          resolve('/node_modules/_time-formater@1.1.3@time-formater/lib'),
+          resolve('/node_modules/vue-echarts'),
+          resolve('/node_modules/_vue-echarts@4.0.4@vue-echarts'),
+          resolve('/node_modules/resize-detector'),
+          resolve('/node_modules/_resize-detector@0.1.10@resize-detector'),
+          resolve('/node_modules/echarts'),
+        ]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,

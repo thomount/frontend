@@ -2,7 +2,10 @@
     <div class="fillcontain">
         <head-top></head-top>
         <div style="item-align: center;">
-            <img :src="imgurl">
+            <!--img :src="imgurl"-->
+            <!--v-chart :options="polar"/-->
+            <div id="main" style="width: 600px;height: 400px;"></div>
+
         </div>
         <div class="table_container">
             <el-table
@@ -64,9 +67,21 @@
 <script>
     import headTop from '../components/headTop'
     import {baseUrl, baseImgPath} from '@/config/env'
-    import {getStatlist, deleteRich, getrich, changetop} from '@/api/getData'
+    import {getStatlist, deleteRich, getrich, changetop} from '@/api/getData'    
+    import echarts from 'echarts'
+
+//    import ECharts from 'vue-echarts'
+//    import 'echarts/lib/chart/line'
+//    import 'echarts/lib/component/polar'
     export default {
         data(){
+            let data = []
+
+            for (let i = 0; i <= 360; i++) {
+                let t = i / 180 * Math.PI
+                let r = Math.sin(2 * t) * Math.cos(2 * t)
+                data.push([r, i])
+            }
             return {
                 baseUrl,
                 baseImgPath,
@@ -85,6 +100,12 @@
                 _num_p: 12,
                 _p: 'month',
                 imgurl:'',
+
+                charts: '',
+                linename: 'unknown',
+            /*  opinion: ["1", "3", "3", "4", "5"],*/
+                opinionData: [3, 2, 4, 4, 5],
+//                opinionData: [],
             }
         },
         activated(){
@@ -105,6 +126,7 @@
                         this.tableData = res.data.data;
                         this.count = this.tableData.length;
                         this.imgurl = baseUrl+"/"+res.data.url;
+                        this.make_graph(res.data.data);
                         console.log('img: '+this.imgurl);
                     }else{
                         throw new Error('获取数据失败');
@@ -112,6 +134,18 @@
                 }catch(err){
                     console.log('获取数据失败', err);
                 }
+            },
+            make_graph(data) {
+
+                this.opinionData = [];
+                var xData = [];
+                for (var i in data) {
+                    this.opinionData.push(data[i].data);
+                    xData.push(data[i].time);
+                }
+//                console.log('data = '+this.opinionData);
+//                console.log(xData);
+                this.drawLine('main', xData, this.linename);
             },
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);
@@ -222,9 +256,69 @@
                 this._num_p = ~~document.getElementById('text').value;
                 console.log('number: '+ this._num_p);
                 this._p = __p;
+                var ch;
+                switch (__p) {
+                    case ('day'):
+                        ch = "日";
+                        break;
+                    case ('month'):
+                        ch = "月";
+                        break;
+                    case ('minutes'):
+                        ch = "分钟";
+                        break;                    
+                }
+                this.linename = "近"+this._num_p+ch+"业绩";
                 this.initData();
+            },
+
+            drawLine(id, xData, linename) {
+                this.charts = echarts.init(document.getElementById(id))
+                this.charts.setOption({
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        data: [linename]
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+ 
+                    toolbox: {
+                        feature: {
+                            saveAsImage: {}
+                        }
+                    },
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: xData
+                    
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+ 
+                    series: [{
+                        name: linename,
+                        type: 'line',
+                        stack: '总量',
+                        data: this.opinionData
+                    }]
+                })
             }
         },
+        
+        mounted() {
+            this.$nextTick(function() {
+                this.drawLine('main', ['2019-11-12', '2019-11-13', '2019-11-14', '2019-11-15', '2019-11-16'], this.linename)
+            })
+        }
+
     }
 </script>
 

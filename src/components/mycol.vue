@@ -1,87 +1,73 @@
-    <template>
-        <div class="bar" id="bar">
-        </div>
-    </template>
+<template>
+<v-chart :options="polar"/>
+</template>
 
-    <script>
-    export default {
-        name : "Bar",
-      //接收从父组件传回的值
-        props: ["getData"],
-        data() {
-            return {};
+<style>
+/**
+ * The default size is 600px×400px, for responsive charts
+ * you may need to set percentage values as follows (also
+ * don't forget to provide a size for the container).
+ */
+.echarts {
+  width: 100%;
+  height: 100%;
+}
+</style>
+
+<script>
+import ECharts from 'vue-echarts'
+import 'echarts/lib/chart/line'
+import 'echarts/lib/component/polar'
+
+export default {
+  components: {
+    'v-chart': ECharts
+  },
+  data () {
+    let data = []
+
+    for (let i = 0; i <= 360; i++) {
+        let t = i / 180 * Math.PI
+        let r = Math.sin(2 * t) * Math.cos(2 * t)
+        data.push([r, i])
+    }
+
+    return {
+      polar: {
+        title: {
+          text: '极坐标双数值轴'
         },
-      //实时监听父组件传过来的值，进而执行drawBar方法，重绘柱状图
-        watch:{
-            getData:{
-                handler(value){
-                    this.drawBar(value)
-                },
-                deep: true
-            }
+        legend: {
+          data: ['line']
         },
-        mounted() {
-            this.drawBar();
+        polar: {
+          center: ['50%', '54%']
         },
-        methods: {
-            drawBar({
-                textTitle  = "",
-                nameTitle  = "",
-                nameArray  = [],
-                dataArray  = [],
-                colorArray = []
-                }          = {}) {
-                let barBox = this.$echarts.init(document.getElementById("bar"));
-                let option = {
-                    title: {
-                        text     : textTitle,
-                        left     : "center",
-                        top      : 20,
-                        textStyle: {
-                            color: "#000"
-                        }
-                    },
-                    tooltip: {
-                        trigger    : "axis",
-                        axisPointer: {
-                            type: "shadow" 
-                        }
-                    },
-                    xAxis: [
-                        {
-                            type    : "category",
-                            data    : nameArray,
-                            axisTick: {
-                                alignWithLabel: true
-                            }
-                        }
-                    ],
-                    yAxis: [
-                        {
-                            type: "value"
-                        }
-                    ],
-                    series: [
-                        {
-                            name     : nameTitle,
-                            type     : "bar",
-                            barWidth : "60%",
-                            data     : dataArray,
-                            itemStyle: {
-                                normal: {
-                                    color: function(params) {
-                                        var colorList = colorArray;
-                                        return colorList[params.dataIndex];
-                                    }
-                                }
-                            }
-                        }
-                    ]
-                };
-                barBox.setOption(option, true);
-            }
-        }
-    };
-    </script>
-    <style scoped>
-    </style>
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross'
+          }
+        },
+        angleAxis: {
+          type: 'value',
+          startAngle: 0
+        },
+        radiusAxis: {
+          min: 0
+        },
+        series: [
+          {
+            coordinateSystem: 'polar',
+            name: 'line',
+            type: 'line',
+            showSymbol: false,
+            data: data
+          }
+        ],
+        animationDuration: 2000
+      }
+    }
+  }
+}
+</script>
