@@ -1,7 +1,7 @@
 # First stage, build the frontend
 FROM node:10.16.1
 
-RUN npm install set https://registry.npm.taobao.org
+RUN npm config set registry https://registry.npm.taobao.org
 
 ENV FRONTEND=/opt/frontend
 
@@ -14,11 +14,11 @@ RUN npm install
 COPY . $FRONTEND
 RUN npm run build
 
-FROM nginx:1.16.1
+#FROM nginx:1.16.1
 
-ENV HOME=/opt/app
+#ENV HOME=/opt/app
 
-WORKDIR $HOME
+#WORKDIR $HOME
 
 ENV SERVER_PORT 80
 EXPOSE 80
