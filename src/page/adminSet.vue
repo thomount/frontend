@@ -6,8 +6,9 @@
             <ul>
                 <li>
                     <span>姓名：</span><span>{{adminInfo.username}}</span>
-                </li>
+                </li>                
                 <li>
+
                     <span>编辑图文权限：</span><span>{{adminInfo.edit_rich}}</span>
                 </li>
                 <li>
@@ -29,6 +30,9 @@
                 <li>
                     <el-button @click="submit()">确定修改</el-button>
                 </li>
+                <li>
+                    <div class="qrcode" id="qrcode"></div>               
+                </li>
              </ul>
         </div>
     </div>
@@ -40,6 +44,7 @@
     import {baseUrl, baseImgPath} from '@/config/env'
     import {getAdminInfo, changePsw} from '@/api/getData'
     import Global from '@/config/global'
+    import QRCode from 'qrcodejs2'
 
     export default {
         data(){
@@ -81,10 +86,18 @@
                 if (res.status == 200) {
                     console.log(res.data);
                     this.adminInfo = res.data;
+                    this.adminInfo.username = Global.username;
                     Global.edit_rich = this.adminInfo.edit_rich;
                     Global.edit_charge = this.adminInfo.edit_charge;
                     Global.edit_config = this.adminInfo.edit_config;
                     Global.level = this.adminInfo.level;
+                    if (this.qrcode == null) {
+                        this.qrcode = new QRCode('qrcode', {
+                            width: 232,  // 设置宽度
+                            height: 232, // 设置高度
+                            text: Global.username,
+                        });
+                    }
                 } else {
                     if (res.status == 401) {
                         this.$message("登录状态过期");
