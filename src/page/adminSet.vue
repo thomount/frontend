@@ -47,7 +47,7 @@
                 baseUrl,
                 baseImgPath,
                 adminInfo: {
-                    
+
                 }
             }
         },
@@ -86,8 +86,10 @@
                     Global.edit_config = this.adminInfo.edit_config;
                     Global.level = this.adminInfo.level;
                 } else {
-                    this.$message("用户信息获取失败");
-                }
+                    if (res.status == 401) {
+                        this.$message("登录状态过期");
+                        this.$router.push("/");
+                    }                }
                 console.log(Global);
             }
 

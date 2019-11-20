@@ -177,7 +177,11 @@
                         console.log(res);
                         
                     }else{
-                        throw new Error('获取数据失败');
+//                        throw new Error('获取数据失败');
+                        if (res.status == 401) {
+                            this.$message("登录状态过期");
+                            this.$router.push("/");
+                        }
                     }
                     this.getRichlist();
                 }catch(err){

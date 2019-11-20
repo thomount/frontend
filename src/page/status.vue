@@ -135,7 +135,10 @@
                         this.make_graph(res.data.data);
                         console.log('img: '+this.imgurl);
                     }else{
-                        throw new Error('获取数据失败');
+                        if (res.status == 401) {
+                            this.$message("登录状态过期");
+                            this.$router.push("/");
+                        }
                     }
                 }catch(err){
                     console.log('获取数据失败', err);
