@@ -32,4 +32,4 @@ RUN npm run build
 
 ENV SERVER_PORT 80
 EXPOSE 80
-CMD ["node", "index.js"]
+CMD ["npm", "run", "dev"]
