@@ -10,6 +10,7 @@ WORKDIR $FRONTEND
 COPY package.json $FRONTEND
 COPY package-lock.json $FRONTEND
 RUN cnpm install
+RUN cnpm install qrcodejs2
 
 COPY . $FRONTEND
 RUN npm run build
