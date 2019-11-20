@@ -69,6 +69,7 @@
     import {baseUrl, baseImgPath} from '@/config/env'
     import {getStatlist, deleteRich, getrich, changetop} from '@/api/getData'    
     import echarts from 'echarts'
+    import Global from '@/config/global'
 
 //    import ECharts from 'vue-echarts'
 //    import 'echarts/lib/chart/line'
@@ -109,6 +110,11 @@
             }
         },
         activated(){
+            console.log(Global);
+            if (Global.level != 2) {
+                this.$message("无权限");
+                return;
+            }
             this.initData();
             this.text = '';
         },
@@ -155,103 +161,11 @@
                 this.offset = (val - 1)*this.limit;
                 this.initData()
             },
-            async checkRich(index, row) {
-                console.log('查看图文');
-                try {
-                    const res = await getrich({id: this.tableData[index].id});
-//                    console.log(res);
-                    this.text = res.data;
-                }
-                catch (e) {
-                    console.log(e);
-                }
-
-            },
-            async handleDelete(index, row) {
-                try{
-                    const res = await deleteRich({id: row.id});
-                    console.log(res);
-                    if (res.status == 200) {
-                        this.$message({
-                            type: 'success',
-                            message: '删除图文成功'
-                        });
-
-                    }else{
-                        throw new Error(res.message)
-                    }
-                    this.getRichlist();
-                }catch(err){
-                    this.$message({
-                        type: 'error',
-                        message: err.message
-                    });
-                    console.log('删除图文失败')
-                }
-            },
-
-            async querySearchAsync(queryString, cb) {
-                if (queryString) {
-                    try{
-                        const cityList = await searchplace(this.city.id, queryString);
-                        if (cityList instanceof Array) {
-                            cityList.map(item => {
-                                item.value = item.address;
-                                return item;
-                            })
-                            cb(cityList)
-                        }
-                    }catch(err){
-                        console.log(err)
-                    }
-                }
-            },
-            addressSelect(vale){
-                const {address, latitude, longitude} = vale;
-                this.address = {address, latitude, longitude};
-            },
-            handleServiceAvatarScucess(res, file) {
-                if (res.status == 1) {
-                    this.selectTable.image_path = res.image_path;
-                }else{
-                    this.$message.error('上传图片失败！');
-                }
-            },
-            beforeAvatarUpload(file) {
-                const isRightType = (file.type === 'image/jpeg') || (file.type === 'image/png');
-                const isLt2M = file.size / 1024 / 1024 < 2;
-
-                if (!isRightType) {
-                    this.$message.error('上传头像图片只能是 JPG 格式!');
-                }
-                if (!isLt2M) {
-                    this.$message.error('上传头像图片大小不能超过 2MB!');
-                }
-                return isRightType && isLt2M;
-            },
-            async updateShop(){
-                this.dialogFormVisible = false;
-                try{
-                    Object.assign(this.selectTable, this.address);
-                    this.selectTable.category = this.selectedCategory.join('/');
-                    const res = await updateResturant(this.selectTable)
-                    if (res.status == 1) {
-                        this.$message({
-                            type: 'success',
-                            message: '更新店铺信息成功'
-                        });
-                        this.initData();
-                    }else{
-                        this.$message({
-                            type: 'error',
-                            message: res.message
-                        });
-                    }
-                }catch(err){
-                    console.log('更新餐馆信息失败', err);
-                }
-            },
             changePeriod(__p) {
+                if (Global.level != 2) {
+                    this.$$message("无权限查看报表统计");
+                    return;
+                }
 //                console.log(document.getElementById('text'));
                 this._num_p = ~~document.getElementById('text').value;
                 console.log('number: '+ this._num_p);

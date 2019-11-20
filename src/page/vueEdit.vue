@@ -28,6 +28,7 @@
     import { quillEditor } from 'vue-quill-editor'
     import { richtext } from '@/api/getData'
     import {mapActions, mapState} from 'vuex'
+    import Global from "@/config/global"
 
     export default {
         data(){
@@ -49,11 +50,24 @@
 	        	return this.$refs.myQuillEditor.quill
 	      	}
         },
+        activated(){
+//            console.log("global: ");
+//            console.log(Global);
+            if (!Global.edit_rich) {
+                this.$message("无权限");
+//                this.$router.push('/adminSet');
+            }
+        },
         methods: {
 		    onEditorReady(editor) {
 		        console.log('editor ready!', editor)
 		    },
 		    async submit(){
+                if (!Global.edit_rich) {
+                    this.$message("无权限");
+                    return;
+    //                this.$router.push('/adminSet');
+                }
                 this.title = document.getElementById("title_area").value;
                 this.topped = document.getElementById("topped").checked;
 //                console.log(this.topped);

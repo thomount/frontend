@@ -6,8 +6,8 @@
  * baseImgPath: 图片存放地址
  * 
  */
-//let baseUrl = 'https://web-ErrorCode400.app.secoder.net'; 
-let baseUrl = 'http://183.172.140.134:8000'; 
+let baseUrl = 'https://web-ErrorCode400.app.secoder.net'; 
+//let baseUrl = 'http://183.172.140.134:8000'; 
 
 let routerMode = 'hash';
 let baseImgPath = '/img/';

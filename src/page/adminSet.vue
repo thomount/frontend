@@ -46,43 +46,55 @@
             return {
                 baseUrl,
                 baseImgPath,
+                adminInfo: {
+                    
+                }
             }
         },
     	components: {
     		headTop,
     	},
         computed: {
-            ...mapState(['adminInfo']),
         },
         methods: {
+            async submit() {
+                var new_psw = document.getElementById("new_psw").value;
+                try{
+                    const res = await changePsw({username: Global.username, password: new_psw});
+                    if (res.status == 200) {
+                        this.$message({
+                            type: 'success',
+                            message: '修改密码成功',
+                        })
+                    } else {
+                        this.$message({
+                            type: "error",
+                            message: "修改密码失败"+res.msg,
+                        })
+                    }
+                } catch (e) {
+                    console.log(e);
+                }
+            },
+            async initData() {
+                const res = await getAdminInfo({username: Global.username});
+                if (res.status == 200) {
+                    console.log(res.data);
+                    this.adminInfo = res.data;
+                    Global.edit_rich = this.adminInfo.edit_rich;
+                    Global.edit_charge = this.adminInfo.edit_charge;
+                    Global.edit_config = this.adminInfo.edit_config;
+                    Global.level = this.adminInfo.level;
+                } else {
+                    this.$message("用户信息获取失败");
+                }
+                console.log(Global);
+            }
+
         },
         activated() {
-            getAdminInfo({username: Global.username});
-//            this.initData();
+            this.initData();
         },
-        async submit() {
-            var new_psw = document.getElementById("new_psw").value;
-            try{
-                const res = await changePsw({username: Global.username, password: new_psw});
-                if (res.status == 200) {
-                    this.$message({
-                        type: 'success',
-                        message: '修改密码成功',
-                    })
-                } else {
-                    this.$message({
-                        type: "error",
-                        message: "修改密码失败"+res.msg,
-                    })
-                }
-            } catch (e) {
-                console.log(e);
-            }
-        },
-        async initData() {
-            const res = await getAdminInfo({username: Global.username});
-
-        }
     }
 </script>
 

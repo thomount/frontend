@@ -117,6 +117,7 @@
 <script>
     import headTop from '../components/headTop'
     import {getChargelist, changeCharge} from '@/api/getData'
+    import Global from '@/config/global'
     export default {
         data(){
             return {
@@ -181,6 +182,10 @@
                 this.getUsers()
             },
             change(_index, _str) {
+                if (!Global.edit_charge) {
+                    this.$message("无权限");
+                    return;
+                }
                 this.dv = true;
                 this.editing = {
                     index: _index,

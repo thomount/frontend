@@ -81,6 +81,7 @@
 <script>
     import headTop from '../components/headTop'
     import { getUserlist, changeUserauth } from '@/api/getData'
+    import Global from '@/config/global'
     export default {
         data(){
             return {
@@ -183,6 +184,12 @@
                             type: 'success',
                             message: '修改权限成功'
                         });
+                        if (data.username == Global.username) {     //修改自身权限
+                            Global.level = data.level;
+                            Global.edit_rich = data.edit_rich;
+                            Global.edit_charge = data.edit_charge;
+                            Global.edit_config = data.edit_config;
+                        }
                     } else {
                         this.$message({
                             type: 'error',
