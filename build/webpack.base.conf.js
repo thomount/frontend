@@ -54,7 +54,6 @@ module.exports = {
           resolve('/node_modules/resize-detector'),
           resolve('/node_modules/_resize-detector@0.1.10@resize-detector'),
           resolve('/node_modules/qrcodjs2'),
-          resolve('/node_modules/_qrcodejs2@0.0.2@qrcodejs2'),
 
           resolve('/node_modules/echarts'),
         ]

@@ -46,6 +46,14 @@
                         <el-button style="mini" @click="change_editAuth(props.$index, 2)">修改</el-button>
                     </template>
               </el-table-column>
+              <el-table-column
+                label="修改图文"
+                >
+                    <template slot-scope="props">
+                        <el-button style="mini" @click="edit_rich(props.$index)">修改</el-button>
+                    </template>
+              </el-table-column>
+              
 		    </el-table>
 		    <div class="Pagination" style="text-align: left;margin-top: 10px;">
                 <el-pagination
@@ -150,6 +158,11 @@
                 }catch(err){
                     console.log('获取数据失败', err);
                 }
+            },
+            edit_rich(index) {
+                var name = this.tableData[index].username;
+                console.log(name);
+                
             },
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);

@@ -83,6 +83,7 @@
             },
             async initData() {
                 const res = await getAdminInfo({username: Global.username});
+                console.log(res);
                 if (res.status == 200) {
                     console.log(res.data);
                     this.adminInfo = res.data;
@@ -108,6 +109,7 @@
 
         },
         activated() {
+            console.log("activated");
             this.initData();
         },
     }
