@@ -122,6 +122,14 @@
         },
         methods: {
             async initData(){
+                if (Global.level == 2) {
+                    this.$message({
+                        type: 'error',
+                        message: '无权查看'
+                    });
+                    this.tableData.clear();
+                    return;
+                }
                 try{
                     const res = await getUserlist({});
                     if (res.status == 200) {
