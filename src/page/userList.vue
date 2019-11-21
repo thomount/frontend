@@ -140,7 +140,9 @@
         methods: {
             async initData(){
                 try{
-                    const res = await getChargelist({});
+                    var data = {}
+                    if (Global.level != 0) data.username = Global.username;
+                    const res = await getChargelist(data);
                     console.log(res);
                     if (res.status == 200) {
                         this.count = res.data.length;
