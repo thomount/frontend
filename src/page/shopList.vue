@@ -141,6 +141,7 @@
     import headTop from '../components/headTop'
     import {baseUrl, baseImgPath} from '@/config/env'
     import {getRichlist, deleteRich, getrich, changetop} from '@/api/getData'
+    import Global from '@/config/global'
     export default {
         data(){
             return {
@@ -158,9 +159,17 @@
                 selectedCategory: [],
                 address: {},
                 text: '',
+                author: '',
             }
         },
         activated(){
+            if (Global.hasAuthor) {
+                this.author = Global.author;
+                Global.hasAuthor = false;
+                Global.author = "";
+            } else {
+                this.author = null;
+            }
             this.initData();
             this.text = '';
         },
@@ -170,12 +179,21 @@
         methods: {
             async initData(){
                 try{
-                    const res = await getRichlist();
-//                    console.log(res);
+                    var data = {};
+                    if (this.author != null) data.username = this.author;
+                    const res = await getRichlist(data);
+                    console.log(res);
                     if (res.status == 200) {
                         console.log('rich list');
                         console.log(res);
-                        
+                        this.tableData = res.data;
+                        for (var i in this.tableData) {
+                            if (this.tableData[i].topped)
+                                this.tableData[i].istop = '是'
+                            else 
+                                this.tableData[i].istop = '否'
+                        }
+                        console.log(this.tableData);                        
                     }else{
 //                        throw new Error('获取数据失败');
                         if (res.status == 401) {
@@ -183,7 +201,6 @@
                             this.$router.push("/");
                         }
                     }
-                    this.getRichlist();
                 }catch(err){
                     console.log('获取数据失败', err);
                 }
@@ -214,17 +231,7 @@
                     console.log('获取商铺种类失败', err);
                 }
             },
-            async getRichlist(){
-                const res = await getRichlist();
-                this.tableData = res.data;
-                for (var i in this.tableData) {
-                    if (this.tableData[i].topped)
-                        this.tableData[i].istop = '是'
-                    else 
-                        this.tableData[i].istop = '否'
-                }
-                console.log(this.tableData);
-            },
+
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);
             },

@@ -162,7 +162,9 @@
             edit_rich(index) {
                 var name = this.tableData[index].username;
                 console.log(name);
-                
+                Global.hasAuthor = true;
+                Global.author = name;
+                this.$router.push("/shopList");
             },
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);
