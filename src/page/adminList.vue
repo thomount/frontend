@@ -168,11 +168,15 @@
                 }
             },
             edit_rich(index) {
-                var name = this.tableData[index].username;
-                console.log(name);
-                Global.hasAuthor = true;
-                Global.author = name;
-                this.$router.push("/shopList");
+                if (Global.level < this.tableData[index].level) {
+                    var name = this.tableData[index].username;
+                    console.log(name);
+                    Global.hasAuthor = true;
+                    Global.author = name;
+                    this.$router.push("/shopList");
+                } else {
+                    this.$message("无权修改");
+                }
             },
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);
@@ -183,6 +187,10 @@
                 this.getAdmin()
             },
             async change_editAuth(index, pos, value = 0) {
+                if (Global.level >= this.tableData[index].level) {
+                    this.$message("无权修改");
+                    return;
+                }
                 try{
                     var data = this.tableData[index];
                     switch (pos) {
@@ -230,6 +238,10 @@
             },
 
             change_Auth(index, str) {
+                if (Global.level >= this.tableData[index].level) {
+                    this.$message("无权修改");
+                    return;
+                }
                 this.editing = index;
                 this.activityValue = str;
                 this.dv = true;
