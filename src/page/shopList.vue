@@ -261,7 +261,7 @@
                 try {
                     const res = await changetop({id: this.tableData[index].id});
                     if (res.status == 200) {
-                        this.getRichlist();
+                        this.initData();
                         this.$message({
                             type: 'success',
                             message: '修改置顶成功'
@@ -285,7 +285,7 @@
                     }else{
                         throw new Error(res.message)
                     }
-                    this.getRichlist();
+                    this.initData();
                 }catch(err){
                     this.$message({
                         type: 'error',
