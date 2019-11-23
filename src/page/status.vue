@@ -166,7 +166,7 @@
             },
             changePeriod(__p) {
                 if (Global.level != 2) {
-                    this.$$message("无权限查看报表统计");
+                    this.$message("无权限查看报表统计");
                     return;
                 }
 //                console.log(document.getElementById('text'));
